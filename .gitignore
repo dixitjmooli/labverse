@@ -52,3 +52,15 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# Z.ai internal
+/tool-results/
+/worklog.md
+/agent-ctx/
+/z-ai-config/
+.z-ai-config
+.claude
+
+# Project artifacts
+/download/
+/scripts/dev-watchdog.sh
