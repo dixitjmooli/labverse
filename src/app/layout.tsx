@@ -14,24 +14,32 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hinsberg Test Lab - Interactive Chemistry Experiment",
-  description: "Perform the Hinsberg test interactively! Identify 1°, 2°, and 3° amines by adding reagents and observing reactions.",
-  keywords: ["Hinsberg Test", "Chemistry", "Amines", "Interactive Lab", "Organic Chemistry"],
-  authors: [{ name: "Z.ai Team" }],
-  icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
-  },
+  title: "LabVerse — Interactive Science Experiments for Classes 9–12",
+  description:
+    "A teaching aid for teachers and a visual playground for students. Perform CBSE/NCERT science experiments interactively — add reagents, observe reactions, identify unknowns. Chemistry, Physics, Biology, Maths for Classes 9, 10, 11, 12.",
+  keywords: [
+    "CBSE",
+    "NCERT",
+    "Science Experiments",
+    "Chemistry Lab",
+    "Hinsberg Test",
+    "Carbylamine Test",
+    "Tollens Test",
+    "Class 12 Chemistry",
+    "Interactive Lab",
+    "Teaching Aid",
+  ],
+  authors: [{ name: "LabVerse" }],
   openGraph: {
-    title: "Z.ai Code Scaffold",
-    description: "AI-powered development with modern React stack",
-    url: "https://chat.z.ai",
-    siteName: "Z.ai",
+    title: "LabVerse — Interactive Science Experiments",
+    description:
+      "Practise CBSE/NCERT science experiments like a real lab. For teachers & students of Classes 9–12.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Z.ai Code Scaffold",
-    description: "AI-powered development with modern React stack",
+    title: "LabVerse — Interactive Science Experiments",
+    description: "Practise CBSE/NCERT science experiments like a real lab. For teachers & students of Classes 9–12.",
   },
 };
 
