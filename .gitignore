@@ -64,3 +64,13 @@ server.log
 # Project artifacts
 /download/
 /scripts/dev-watchdog.sh
+# Platform / non-app artifacts
+/examples/
+/mini-services/
+/db/
+/prisma/
+/skills/
+.env
+Caddyfile
+.zscripts
+tool-results/
