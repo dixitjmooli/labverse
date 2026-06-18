@@ -81,7 +81,7 @@ export function ExperimentPlayer({
     if (phase === "experiment") setPhase("intro");
   }, [phase]);
 
-  const backHref = `/class-${manifest.classId}/${manifest.subjectId}/${manifest.chapterSlug}`;
+  const backHref = `/class/${manifest.classId}/${manifest.subjectId}/${manifest.chapterSlug}`;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-emerald-50/30 to-teal-50/50">

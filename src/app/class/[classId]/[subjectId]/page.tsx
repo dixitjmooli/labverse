@@ -24,7 +24,7 @@ export default function ChapterPage({
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-violet-50/30 to-fuchsia-50/40">
       <header className="border-b border-gray-100 bg-white/70 backdrop-blur-md sticky top-0 z-30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-2">
-          <Link href={`/class-${cls.id}`} className="p-1.5 rounded-lg hover:bg-gray-100">
+          <Link href={`/class/${cls.id}`} className="p-1.5 rounded-lg hover:bg-gray-100">
             <ArrowLeft className="w-4 h-4 text-gray-400" />
           </Link>
           <motion.div
@@ -60,7 +60,7 @@ export default function ChapterPage({
               transition={{ delay: i * 0.04 }}
             >
               <Link
-                href={`/class-${cls.id}/${subj.id}/${ch.slug}`}
+                href={`/class/${cls.id}/${subj.id}/${ch.slug}`}
                 className="group flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm hover:shadow-lg border border-gray-100 transition-all"
               >
                 <div

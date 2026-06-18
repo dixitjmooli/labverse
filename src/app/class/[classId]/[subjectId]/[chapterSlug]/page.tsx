@@ -36,7 +36,7 @@ export default function ExperimentListPage({
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/50">
       <header className="border-b border-gray-100 bg-white/70 backdrop-blur-md sticky top-0 z-30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-2">
-          <Link href={`/class-${cls.id}/${subj.id}`} className="p-1.5 rounded-lg hover:bg-gray-100">
+          <Link href={`/class/${cls.id}/${subj.id}`} className="p-1.5 rounded-lg hover:bg-gray-100">
             <ArrowLeft className="w-4 h-4 text-gray-400" />
           </Link>
           <motion.div
@@ -79,7 +79,7 @@ export default function ExperimentListPage({
                 transition={{ delay: 0.1 + i * 0.07 }}
               >
                 <Link
-                  href={`/class-${cls.id}/${subj.id}/${chapterSlug}/${exp.id}`}
+                  href={`/class/${cls.id}/${subj.id}/${chapterSlug}/${exp.id}`}
                   className="group block bg-white rounded-2xl p-5 shadow-md hover:shadow-2xl border border-gray-100 transition-all overflow-hidden relative"
                 >
                   <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${exp.gradient}`} />
@@ -132,7 +132,7 @@ export default function ExperimentListPage({
               return (
                 <Link
                   key={c.slug}
-                  href={`/class-${cls.id}/${subj.id}/${c.slug}`}
+                  href={`/class/${cls.id}/${subj.id}/${c.slug}`}
                   className={`flex-shrink-0 text-xs px-3 py-2 rounded-xl border transition-all ${
                     isCurrent
                       ? "bg-gray-800 text-white border-gray-800"

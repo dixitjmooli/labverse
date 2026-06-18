@@ -77,7 +77,7 @@ export default function HomePage() {
                 transition={{ delay: 0.1 + i * 0.08 }}
               >
                 <Link
-                  href={`/class-${cls.id}`}
+                  href={`/class/${cls.id}`}
                   className="group block bg-white rounded-3xl shadow-md hover:shadow-2xl border border-gray-100 overflow-hidden transition-all"
                 >
                   <div className={`h-2 bg-gradient-to-r ${cls.gradient}`} />

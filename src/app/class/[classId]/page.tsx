@@ -1,16 +1,26 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { notFound } from "next/navigation";
 import { use } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import { ArrowLeft, ChevronRight, FlaskConical, BookOpen } from "lucide-react";
 import { CLASS_META, SUBJECTS, getExperimentsForSubject } from "@/lib/syllabus-utils";
 
 export default function SubjectPage({ params }: { params: Promise<{ classId: string }> }) {
   const { classId } = use(params);
   const cls = CLASS_META.find((c) => c.id === classId);
-  if (!cls) return notFound();
+
+  if (!cls) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="text-center">
+          <h1 className="text-3xl font-black text-gray-800 mb-2">Class not found</h1>
+          <p className="text-gray-500 mb-4">Class ID: <code className="bg-gray-100 px-2 py-0.5 rounded">{classId}</code></p>
+          <Link href="/" className="text-indigo-600 font-bold">← Back to home</Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
@@ -45,7 +55,7 @@ export default function SubjectPage({ params }: { params: Promise<{ classId: str
                 transition={{ delay: 0.1 + i * 0.08 }}
               >
                 <Link
-                  href={`/class-${cls.id}/${subj.id}`}
+                  href={`/class/${cls.id}/${subj.id}`}
                   className="group block bg-white rounded-2xl p-5 shadow-md hover:shadow-xl border border-gray-100 transition-all"
                 >
                   <div className="flex items-center justify-between mb-3">
