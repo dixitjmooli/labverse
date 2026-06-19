@@ -31,9 +31,14 @@ import iodoformTest from "@/experiments/class-12/chemistry/aldehydes-ketones-and
 import nahco3Test from "@/experiments/class-12/chemistry/aldehydes-ketones-and-carboxylic-acids/nahco3-test";
 import esterTest from "@/experiments/class-12/chemistry/aldehydes-ketones-and-carboxylic-acids/ester-test";
 
+import indicatorHunt from "@/experiments/class-10/science/acids-bases-and-salts/indicator-hunt";
+
 // ─── All experiment modules (full TestDef + manifest) ────────────────────────
 
 export const MODULES: ExperimentModule[] = [
+  // ─── Class 10 · Science · Acids, Bases and Salts ───────────────────────────
+  indicatorHunt,
+
   // ─── Class 12 · Chemistry · Amines ────────────────────────────────────────
   hinsbergTest,
   carbylamineTest,
