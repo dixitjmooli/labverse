@@ -32,18 +32,30 @@ function shuffleArr<T>(arr: T[]): T[] {
   return s;
 }
 
+// Pre-fill color for unknown samples (water-like, colorless liquid in tube)
+const SAMPLE_LIQUID_COLOR = "rgba(219,234,254,0.55)"; // very faint blue tint — looks like a clear aqueous sample
+const SAMPLE_DESCRIPTION = "Unknown sample — add reagents to test.";
+
 function createTubes(test: TestDef): TubeState[] {
   const types = shuffleArr(test.unknownTypes);
-  return types.map((t, i) => ({
-    id: String.fromCharCode(65 + i),
-    unknownType: t,
-    r1Added: false,
-    r2Added: false,
-    reaction: test.getReaction(t, false, false),
-    liquidLevel: 0,
-    fizzing: false,
-    stinking: false,
-  }));
+  return types.map((t, i) => {
+    const baseReaction = test.getReaction(t, false, false);
+    return {
+      id: String.fromCharCode(65 + i), // A, B, C, D...
+      unknownType: t,
+      r1Added: false,
+      r2Added: false,
+      // Tube starts pre-filled with the unknown sample (clear liquid)
+      reaction: {
+        ...baseReaction,
+        liquidColor: SAMPLE_LIQUID_COLOR,
+        description: SAMPLE_DESCRIPTION,
+      },
+      liquidLevel: 1, // pre-filled with sample
+      fizzing: false,
+      stinking: false,
+    };
+  });
 }
 
 type GamePhase = "intro" | "experiment" | "identify" | "results";
@@ -215,7 +227,9 @@ function ExperimentScreen({ test, tubes, setTubes, onIdentify, onBack }: {
             const r1 = sel === 0 ? true : t.r1Added;
             const r2 = sel === 1 ? true : t.r2Added;
             const reaction = test.getReaction(t.unknownType, r1, r2);
-            const newLevel = !t.r1Added && !t.r2Added ? 1 : 2;
+            // Tube starts pre-filled (level 1). Each added reagent raises level by 1.
+            const addedCount = (r1 ? 1 : 0) + (r2 ? 1 : 0);
+            const newLevel = 1 + addedCount;
             const willFizz = [
               "precipitate",
               "color-change",
@@ -302,8 +316,8 @@ function ExperimentScreen({ test, tubes, setTubes, onIdentify, onBack }: {
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="mb-4 w-full max-w-sm">
               <div className="bg-white border border-emerald-200 rounded-xl px-4 py-3 text-center text-xs shadow-md">
                 {sel === null
-                  ? "👆 Select a reagent bottle, then click a test tube"
-                  : `🧪 Click a tube to add ${sel === 0 ? test.reagents[0].name : test.reagents[1].name}`}
+                  ? "👆 Select a reagent bottle, then click a sample tube to add it"
+                  : `🧪 Click a sample tube to add ${sel === 0 ? test.reagents[0].name : test.reagents[1].name}`}
               </div>
             </motion.div>
           )}
@@ -350,7 +364,14 @@ function ExperimentScreen({ test, tubes, setTubes, onIdentify, onBack }: {
           </h3>
           <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1 custom-scrollbar">
             {tubes.every((t) => !t.r1Added && !t.r2Added) ? (
-              <p className="text-xs text-gray-300 italic text-center py-4">Add reagents to see observations...</p>
+              tubes.map((tube) => (
+                <div key={tube.id} className="flex gap-2 text-xs p-2 rounded-lg bg-slate-50">
+                  <TestTube2 className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-slate-300" />
+                  <span className="text-slate-400">
+                    <b>Sample {tube.id}:</b> {tube.reaction.description}
+                  </span>
+                </div>
+              ))
             ) : (
               tubes.map(
                 (tube) =>
@@ -364,7 +385,7 @@ function ExperimentScreen({ test, tubes, setTubes, onIdentify, onBack }: {
                     >
                       <TestTube2 className={`w-3.5 h-3.5 mt-0.5 flex-shrink-0 ${tube.stinking ? "text-lime-500" : "text-gray-400"}`} />
                       <span>
-                        <b>Tube {tube.id}:</b> {tube.reaction.description}
+                        <b>Sample {tube.id}:</b> {tube.reaction.description}
                       </span>
                     </motion.div>
                   )
@@ -407,7 +428,7 @@ function IdentifyScreen({ test, tubes, onSubmit }: { test: TestDef; tubes: TubeS
               transition={{ delay: i * 0.1 }}
             >
               <div className="flex items-center justify-between mb-2">
-                <h3 className="font-black text-gray-800 text-lg">Tube {tube.id}</h3>
+                <h3 className="font-black text-gray-800 text-lg">Sample {tube.id}</h3>
                 {answers[tube.id] && (
                   <span className="text-xs px-2.5 py-1 bg-emerald-100 text-emerald-700 rounded-full font-bold">{answers[tube.id]}</span>
                 )}
@@ -497,7 +518,7 @@ function ResultsScreen({ test, tubes, answers, onReset }: { test: TestDef; tubes
                   {isCorrect ? <CheckCircle2 className="w-6 h-6 text-white" /> : <XCircle className="w-6 h-6 text-white" />}
                 </div>
                 <div className="text-left">
-                  <div className="font-bold text-gray-800">Tube {tube.id}</div>
+                  <div className="font-bold text-gray-800">Sample {tube.id}</div>
                   <div className="text-xs text-gray-500">
                     Your answer: <span className={`font-bold ${isCorrect ? "text-emerald-600" : "text-red-600"}`}>{answers[tube.id]}</span>
                     {!isCorrect && (

@@ -31,7 +31,8 @@ export function TestTubeVisual({
   tubeRef: (el: HTMLDivElement | null) => void;
 }) {
   const { reaction, liquidLevel } = tube;
-  const lPct = liquidLevel === 0 ? 0 : liquidLevel === 1 ? 45 : 65;
+  // Map: 0 = empty, 1 = pre-filled sample (40%), 2 = +1 reagent (55%), 3 = +2 reagents (70%)
+  const lPct = liquidLevel === 0 ? 0 : liquidLevel === 1 ? 40 : liquidLevel === 2 ? 55 : 70;
   const isSmell =
     reaction.visual === "foul-smell" ||
     reaction.visual === "fruity-smell" ||
@@ -53,17 +54,18 @@ export function TestTubeVisual({
     >
       {(isSmell || tube.stinking) && <StinkLines color={stinkColor} />}
       <motion.div
-        className={`text-lg font-black mb-2 px-4 py-1.5 rounded-xl transition-all duration-300 ${
+        className={`text-base font-black mb-2 px-3 py-1.5 rounded-xl transition-all duration-300 ${
           tube.r1Added || tube.r2Added
             ? isSmell
               ? "bg-lime-100 text-lime-800 ring-2 ring-lime-400"
               : reaction.visual !== "no-reaction"
               ? "bg-emerald-100 text-emerald-800 shadow-md"
               : "bg-gray-100 text-gray-500"
-            : "bg-gray-100 text-gray-500"
+            : "bg-slate-100 text-slate-600 ring-1 ring-slate-200"
         }`}
         layout
       >
+        <span className="text-[9px] font-semibold uppercase tracking-wider opacity-70 mr-1">Sample</span>
         {tube.id}
       </motion.div>
 
@@ -156,6 +158,11 @@ export function TestTubeVisual({
             <span className="text-gray-300 text-[10px] font-bold tracking-widest uppercase rotate-[-90deg]">empty</span>
           </div>
         )}
+        {liquidLevel > 0 && !tube.r1Added && !tube.r2Added && (
+          <div className="absolute inset-0 flex items-end justify-center pb-3 pointer-events-none">
+            <span className="text-slate-400/70 text-[9px] font-bold tracking-wider uppercase">unknown</span>
+          </div>
+        )}
       </div>
 
       <div className="flex gap-1 mt-1.5 min-h-[20px] flex-wrap justify-center">
@@ -174,14 +181,20 @@ export function TestTubeVisual({
       </div>
 
       <AnimatePresence mode="wait">
-        {(tube.r1Added || tube.r2Added) && reaction.description && (
+        {reaction.description && (
           <motion.div
             key={reaction.description}
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             className={`mt-0.5 text-[10px] text-center max-w-[130px] leading-snug font-medium ${
-              isSmell ? (reaction.smellType === "foul" ? "text-lime-700" : "text-pink-700") : "text-gray-500"
+              !tube.r1Added && !tube.r2Added
+                ? "text-slate-400 italic"
+                : isSmell
+                ? reaction.smellType === "foul"
+                  ? "text-lime-700"
+                  : "text-pink-700"
+                : "text-gray-500"
             }`}
           >
             {reaction.description}
