@@ -33,6 +33,14 @@ export interface ReagentDef {
   liquidColor: string;
   ringColor: string;
   bgColor: string;
+  /**
+   * Optional category label used to group reagents visually in the player.
+   * Common values: "natural" | "synthetic" | "olfactory".
+   * When ANY reagent on a test has a category, the player renders reagents
+   * in labelled sections (one per unique category, in array order).
+   * When no reagent has a category, the player falls back to a flat row.
+   */
+  category?: string;
 }
 
 export interface IntroStep {

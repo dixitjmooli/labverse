@@ -202,6 +202,78 @@ function IntroScreen({ test, onStart }: { test: TestDef; onStart: () => void }) 
   );
 }
 
+// ─── Reagent Bank (renders flat OR grouped by `category`) ────────────────────
+// When ANY reagent has a `category` field, reagents are rendered in labelled
+// sections (one per unique category, in array order). Otherwise a flat row
+// is rendered — keeping every existing 2-reagent experiment unchanged.
+
+const CATEGORY_META: Record<string, { label: string; emoji: string; sublabel: string }> = {
+  natural:    { label: "Natural",    emoji: "🌿", sublabel: "From living things" },
+  synthetic:  { label: "Synthetic",  emoji: "🧪", sublabel: "Lab-made dyes" },
+  olfactory:  { label: "Olfactory",  emoji: "👃", sublabel: "Smell-based" },
+};
+
+function ReagentBank({
+  test,
+  sel,
+  setSel,
+}: {
+  test: TestDef;
+  sel: number | null;
+  setSel: React.Dispatch<React.SetStateAction<number | null>>;
+}) {
+  const hasCategories = test.reagents.some((r) => r.category);
+
+  if (!hasCategories) {
+    return (
+      <div className="flex flex-wrap gap-3 sm:gap-4 justify-center max-w-3xl mx-auto">
+        {test.reagents.map((r, i) => (
+          <ReagentBottle key={r.id} reagent={r} selected={sel === i} onClick={() => setSel(sel === i ? null : i)} />
+        ))}
+      </div>
+    );
+  }
+
+  // Unique categories in array order (so the experiment author controls order)
+  const categories: string[] = [];
+  for (const r of test.reagents) {
+    if (r.category && !categories.includes(r.category)) categories.push(r.category);
+  }
+
+  return (
+    <div className="space-y-3 max-w-3xl mx-auto">
+      {categories.map((cat) => {
+        const meta = CATEGORY_META[cat];
+        return (
+          <div key={cat} className="bg-white/60 rounded-2xl px-3 py-2.5 border border-gray-100 shadow-sm">
+            <div className="flex items-baseline justify-center gap-2 mb-2">
+              <span className="text-xs">{meta?.emoji ?? "•"}</span>
+              <span className="text-[11px] font-bold text-gray-600 uppercase tracking-wider">
+                {meta?.label ?? cat}
+              </span>
+              {meta?.sublabel && (
+                <span className="text-[9px] text-gray-400 font-medium">— {meta.sublabel}</span>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
+              {test.reagents.map((r, i) =>
+                r.category === cat ? (
+                  <ReagentBottle
+                    key={r.id}
+                    reagent={r}
+                    selected={sel === i}
+                    onClick={() => setSel(sel === i ? null : i)}
+                  />
+                ) : null
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─── Experiment Screen ───────────────────────────────────────────────────────
 function ExperimentScreen({ test, tubes, setTubes, onIdentify, onBack }: {
   test: TestDef;
@@ -339,11 +411,7 @@ function ExperimentScreen({ test, tubes, setTubes, onIdentify, onBack }: {
             <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Indicators &amp; Reagents</span>
             <div className="h-px flex-1 bg-gray-200" />
           </div>
-          <div className="flex flex-wrap gap-3 sm:gap-4 justify-center max-w-3xl mx-auto">
-            {test.reagents.map((r, i) => (
-              <ReagentBottle key={r.id} reagent={r} selected={sel === i} onClick={() => setSel(sel === i ? null : i)} />
-            ))}
-          </div>
+          <ReagentBank test={test} sel={sel} setSel={setSel} />
         </div>
 
         <div className="mb-6 w-full">
