@@ -56,7 +56,17 @@ export interface TestDef {
   desc: string;
   reagents: ReagentDef[];
   unknownTypes: string[];
+  /**
+   * Legacy 2-reagent reaction function (used by all pre-existing experiments).
+   * Takes booleans for whether reagent[0] and reagent[1] were added.
+   */
   getReaction: (unknownType: string, r1Added: boolean, r2Added: boolean) => ReactionResult;
+  /**
+   * Optional N-reagent reaction function (used by experiments with >2 reagents,
+   * e.g. the Indicator Hunt game). Takes the array of added reagent IDs.
+   * When present, the player uses this instead of `getReaction`.
+   */
+  getReactionMulti?: (unknownType: string, addedReagentIds: string[]) => ReactionResult;
   introSteps: IntroStep[];
   reactionKey: ReactionKeyEntry[];
   recap: string[];

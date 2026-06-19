@@ -8,8 +8,11 @@ import { StinkLines, FizzBubbles, GasBubbles } from "./VisualEffects";
 export interface TubeState {
   id: string;
   unknownType: string;
-  r1Added: boolean;
-  r2Added: boolean;
+  /**
+   * Reagent IDs that have been added to this tube (in order added, no duplicates).
+   * Replaces the legacy `r1Added`/`r2Added` booleans — supports N reagents.
+   */
+  addedReagentIds: string[];
   reaction: ReactionResult;
   liquidLevel: number;
   fizzing: boolean;
@@ -55,7 +58,7 @@ export function TestTubeVisual({
       {(isSmell || tube.stinking) && <StinkLines color={stinkColor} />}
       <motion.div
         className={`text-base font-black mb-2 px-3 py-1.5 rounded-xl transition-all duration-300 ${
-          tube.r1Added || tube.r2Added
+          tube.addedReagentIds.length > 0
             ? isSmell
               ? "bg-lime-100 text-lime-800 ring-2 ring-lime-400"
               : reaction.visual !== "no-reaction"
@@ -158,25 +161,35 @@ export function TestTubeVisual({
             <span className="text-gray-300 text-[10px] font-bold tracking-widest uppercase rotate-[-90deg]">empty</span>
           </div>
         )}
-        {liquidLevel > 0 && !tube.r1Added && !tube.r2Added && (
+        {liquidLevel > 0 && tube.addedReagentIds.length === 0 && (
           <div className="absolute inset-0 flex items-end justify-center pb-3 pointer-events-none">
             <span className="text-slate-400/70 text-[9px] font-bold tracking-wider uppercase">unknown</span>
           </div>
         )}
       </div>
 
-      <div className="flex gap-1 mt-1.5 min-h-[20px] flex-wrap justify-center">
+      <div className="flex gap-1 mt-1.5 min-h-[20px] flex-wrap justify-center max-w-[110px]">
         <AnimatePresence>
-          {tube.r1Added && (
-            <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-[9px] px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded-full font-semibold border border-amber-200">
-              {test.reagents[0].shortName}
-            </motion.span>
-          )}
-          {tube.r2Added && (
-            <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-[9px] px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded-full font-semibold border border-blue-200">
-              {test.reagents[1].shortName}
-            </motion.span>
-          )}
+          {tube.addedReagentIds.map((rid) => {
+            const reagent = test.reagents.find((r) => r.id === rid);
+            if (!reagent) return null;
+            return (
+              <motion.span
+                key={rid}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0 }}
+                className="text-[9px] px-1.5 py-0.5 rounded-full font-semibold border"
+                style={{
+                  color: reagent.accentColor,
+                  backgroundColor: `${reagent.accentColor}15`,
+                  borderColor: `${reagent.accentColor}40`,
+                }}
+              >
+                {reagent.shortName}
+              </motion.span>
+            );
+          })}
         </AnimatePresence>
       </div>
 
@@ -188,7 +201,7 @@ export function TestTubeVisual({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             className={`mt-0.5 text-[10px] text-center max-w-[130px] leading-snug font-medium ${
-              !tube.r1Added && !tube.r2Added
+              tube.addedReagentIds.length === 0
                 ? "text-slate-400 italic"
                 : isSmell
                 ? reaction.smellType === "foul"

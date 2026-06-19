@@ -39,12 +39,13 @@ const SAMPLE_DESCRIPTION = "Unknown sample — add reagents to test.";
 function createTubes(test: TestDef): TubeState[] {
   const types = shuffleArr(test.unknownTypes);
   return types.map((t, i) => {
-    const baseReaction = test.getReaction(t, false, false);
+    const baseReaction = test.getReactionMulti
+      ? test.getReactionMulti(t, [])
+      : test.getReaction(t, false, false);
     return {
       id: String.fromCharCode(65 + i), // A, B, C, D...
       unknownType: t,
-      r1Added: false,
-      r2Added: false,
+      addedReagentIds: [],
       // Tube starts pre-filled with the unknown sample (clear liquid)
       reaction: {
         ...baseReaction,
@@ -209,27 +210,36 @@ function ExperimentScreen({ test, tubes, setTubes, onIdentify, onBack }: {
   onIdentify: () => void;
   onBack: () => void;
 }) {
-  const [sel, setSel] = useState<0 | 1 | null>(null);
+  const [sel, setSel] = useState<number | null>(null);
   const [showHelp, setShowHelp] = useState(true);
   const [smellReaction, setSmellReaction] = useState<"foul" | "fruity" | "antiseptic" | null>(null);
   const tubeRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const anyAdded = tubes.some((t) => t.r1Added || t.r2Added);
+  const anyAdded = tubes.some((t) => t.addedReagentIds.length > 0);
 
   const handleAdd = useCallback(
     (tubeId: string) => {
       if (sel === null) return;
+      const selectedReagent = test.reagents[sel];
+      if (!selectedReagent) return;
       sfx.playDrop();
       setTimeout(() => sfx.playPour(), 150);
       setTimeout(() => {
         setTubes((prev) =>
           prev.map((t) => {
             if (t.id !== tubeId) return t;
-            const r1 = sel === 0 ? true : t.r1Added;
-            const r2 = sel === 1 ? true : t.r2Added;
-            const reaction = test.getReaction(t.unknownType, r1, r2);
-            // Tube starts pre-filled (level 1). Each added reagent raises level by 1.
-            const addedCount = (r1 ? 1 : 0) + (r2 ? 1 : 0);
-            const newLevel = 1 + addedCount;
+            // Append reagent id (dedupe — adding the same reagent twice is a no-op)
+            const newAdded = t.addedReagentIds.includes(selectedReagent.id)
+              ? t.addedReagentIds
+              : [...t.addedReagentIds, selectedReagent.id];
+            const reaction = test.getReactionMulti
+              ? test.getReactionMulti(t.unknownType, newAdded)
+              : test.getReaction(
+                  t.unknownType,
+                  newAdded.includes(test.reagents[0]?.id),
+                  newAdded.includes(test.reagents[1]?.id)
+                );
+            // Tube starts pre-filled (level 1). Each added reagent raises level by 1, capped at 3.
+            const newLevel = Math.min(3, 1 + newAdded.length);
             const willFizz = [
               "precipitate",
               "color-change",
@@ -258,7 +268,7 @@ function ExperimentScreen({ test, tubes, setTubes, onIdentify, onBack }: {
               setSmellReaction(smell);
               setTimeout(() => setSmellReaction(null), 4000);
             }
-            return { ...t, r1Added: r1, r2Added: r2, reaction, liquidLevel: newLevel, fizzing: willFizz, stinking: isSmell };
+            return { ...t, addedReagentIds: newAdded, reaction, liquidLevel: newLevel, fizzing: willFizz, stinking: isSmell };
           })
         );
       }, 400);
@@ -313,11 +323,11 @@ function ExperimentScreen({ test, tubes, setTubes, onIdentify, onBack }: {
       <main className="flex-1 flex flex-col items-center p-4 max-w-5xl mx-auto w-full">
         <AnimatePresence>
           {showHelp && (
-            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="mb-4 w-full max-w-sm">
+            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="mb-4 w-full max-w-md">
               <div className="bg-white border border-emerald-200 rounded-xl px-4 py-3 text-center text-xs shadow-md">
                 {sel === null
-                  ? "👆 Select a reagent bottle, then click a sample tube to add it"
-                  : `🧪 Click a sample tube to add ${sel === 0 ? test.reagents[0].name : test.reagents[1].name}`}
+                  ? "👆 Select an indicator bottle, then click a sample tube to add it"
+                  : `🧪 Click a sample tube to add ${test.reagents[sel]?.name ?? "the selected reagent"}`}
               </div>
             </motion.div>
           )}
@@ -326,12 +336,12 @@ function ExperimentScreen({ test, tubes, setTubes, onIdentify, onBack }: {
         <div className="mb-6 w-full">
           <div className="flex items-center gap-2 mb-3">
             <div className="h-px flex-1 bg-gray-200" />
-            <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Reagents</span>
+            <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Indicators &amp; Reagents</span>
             <div className="h-px flex-1 bg-gray-200" />
           </div>
-          <div className="flex gap-6 sm:gap-10 justify-center">
+          <div className="flex flex-wrap gap-3 sm:gap-4 justify-center max-w-3xl mx-auto">
             {test.reagents.map((r, i) => (
-              <ReagentBottle key={r.id} reagent={r} selected={sel === i} onClick={() => setSel(sel === i ? null : (i as 0 | 1))} />
+              <ReagentBottle key={r.id} reagent={r} selected={sel === i} onClick={() => setSel(sel === i ? null : i)} />
             ))}
           </div>
         </div>
@@ -363,7 +373,7 @@ function ExperimentScreen({ test, tubes, setTubes, onIdentify, onBack }: {
             <Beaker className="w-3.5 h-3.5 text-emerald-500" /> Observations
           </h3>
           <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1 custom-scrollbar">
-            {tubes.every((t) => !t.r1Added && !t.r2Added) ? (
+            {tubes.every((t) => t.addedReagentIds.length === 0) ? (
               tubes.map((tube) => (
                 <div key={tube.id} className="flex gap-2 text-xs p-2 rounded-lg bg-slate-50">
                   <TestTube2 className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-slate-300" />
@@ -375,7 +385,7 @@ function ExperimentScreen({ test, tubes, setTubes, onIdentify, onBack }: {
             ) : (
               tubes.map(
                 (tube) =>
-                  (tube.r1Added || tube.r2Added) &&
+                  tube.addedReagentIds.length > 0 &&
                   tube.reaction.description && (
                     <motion.div
                       key={tube.id + tube.reaction.description}
