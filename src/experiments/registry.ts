@@ -45,11 +45,35 @@ import activity_1_8 from "@/experiments/class-10/science/chemical-reactions-and-
 import activity_1_9 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-9-sodium-sulphate-barium-chloride";
 import activity_1_10 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-10-copper-oxide-hydrogen";
 
+import activity_2_1 from "@/experiments/class-10/science/acids-bases-and-salts/activity-2-1-acids-sour-blue-litmus";
+import activity_2_2 from "@/experiments/class-10/science/acids-bases-and-salts/activity-2-2-bases-bitter-red-litmus";
+import activity_2_3 from "@/experiments/class-10/science/acids-bases-and-salts/activity-2-3-acid-metal-hydrogen";
+import activity_2_4 from "@/experiments/class-10/science/acids-bases-and-salts/activity-2-4-base-metal-hydrogen";
+import activity_2_5 from "@/experiments/class-10/science/acids-bases-and-salts/activity-2-5-metal-carbonate-acid-co2";
+import activity_2_6 from "@/experiments/class-10/science/acids-bases-and-salts/activity-2-6-metal-oxide-acid";
+import activity_2_7 from "@/experiments/class-10/science/acids-bases-and-salts/activity-2-7-non-metal-oxide-base";
+import activity_2_8 from "@/experiments/class-10/science/acids-bases-and-salts/activity-2-8-ph-test";
+import activity_2_9 from "@/experiments/class-10/science/acids-bases-and-salts/activity-2-9-water-of-crystallization";
+import activity_2_10 from "@/experiments/class-10/science/acids-bases-and-salts/activity-2-10-plaster-of-paris";
+
 // ─── All experiment modules (full TestDef + manifest) ────────────────────────
 
 export const MODULES: ExperimentModule[] = [
   // ─── Class 10 · Science ────────────────────────────────────────────────────
   indicatorHunt,
+
+  // ─── Class 10 · Science · Acids, Bases and Salts (Ch. 2) ──────────────────
+  // One experiment per NCERT Activity 2.1 – 2.10, plus the existing Indicator Hunt game.
+  activity_2_1,
+  activity_2_2,
+  activity_2_3,
+  activity_2_4,
+  activity_2_5,
+  activity_2_6,
+  activity_2_7,
+  activity_2_8,
+  activity_2_9,
+  activity_2_10,
 
   // ─── Class 10 · Science · Chemical Reactions and Equations (Ch. 1) ────────
   // One experiment per NCERT Activity 1.1 – 1.10, plus a "challenge" game.
