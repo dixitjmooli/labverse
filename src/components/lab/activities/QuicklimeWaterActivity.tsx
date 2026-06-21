@@ -286,25 +286,30 @@ function QuicklimeScene({
           )}
         </g>
 
-        {/* Litmus paper (in litmus phase) */}
+        {/* Litmus paper (in litmus phase) — held above the beaker, then dipped into the suspension */}
+        {/* Beaker: x=155-245, mouth at y=145, liquid surface at y=175, liquid bottom at y=230 */}
+        {/* Litmus paper centered above the beaker at x=200 */}
         {phase === "litmus" && (
           <motion.g
-            animate={{ y: litmusDipped ? 30 : 0 }}
+            animate={{ y: litmusDipped ? 55 : 0 }}
             transition={{ type: "spring", stiffness: 80, damping: 12 }}
           >
-            {/* Stick */}
-            <rect x="280" y="120" width="4" height="80" fill="#92400e" rx="1" />
-            {/* Litmus strip */}
-            <rect x="278" y="195" width="8" height="22" fill={litmusDipped ? "#3b82f6" : "#dc2626"} stroke="#1f2937" strokeWidth="0.5" rx="1" />
+            {/* Holder stick (held from above) */}
+            <rect x="198" y="80" width="4" height="50" fill="#92400e" rx="1" />
+            {/* Litmus strip — starts just above the beaker mouth (y=130-145), not yet in liquid */}
+            <rect x="195" y="130" width="10" height="18" fill={litmusDipped ? "#3b82f6" : "#dc2626"} stroke="#1f2937" strokeWidth="0.5" rx="1" />
+            {/* Gradual red → blue colour change when dipped */}
             {litmusDipped && (
               <motion.rect
-                x="278" y="195" width="8" height="22"
+                x="195" y="130" width="10" height="18"
                 fill="#3b82f6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
               />
             )}
+            {/* "Hand" holding the stick (small grip indicator at the top) */}
+            <rect x="194" y="74" width="12" height="8" fill="#fde68a" stroke="#92400e" strokeWidth="0.8" rx="2" />
           </motion.g>
         )}
 
