@@ -37,6 +37,7 @@ import activity_1_1 from "@/experiments/class-10/science/chemical-reactions-and-
 import activity_1_2 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-2-zinc-hcl";
 import activity_1_3 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-3-quicklime-water";
 import activity_1_4 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-4-heating-ferrous-sulphate";
+import activity_1_4b from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-4b-electrolysis-of-water";
 import activity_1_5 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-5-heating-lead-nitrate";
 import activity_1_6 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-6-silver-chloride-sunlight";
 import activity_1_7 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-7-iron-copper-sulphate";
@@ -56,6 +57,7 @@ export const MODULES: ExperimentModule[] = [
   activity_1_2,
   activity_1_3,
   activity_1_4,
+  activity_1_4b,
   activity_1_5,
   activity_1_6,
   activity_1_7,
