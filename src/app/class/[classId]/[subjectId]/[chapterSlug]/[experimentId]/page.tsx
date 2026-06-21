@@ -19,5 +19,14 @@ export default function ExperimentPage({
   const mod = getExperiment(classId, subjectId, chapterSlug, experimentId);
   if (!mod) return notFound();
 
-  return <ExperimentPlayer test={mod.test} manifest={mod.manifest} />;
+  // Scene-based activities provide their own bespoke React component.
+  // Everything else falls back to the generic test-tube ExperimentPlayer.
+  if (mod.Component) {
+    const C = mod.Component;
+    return <C manifest={mod.manifest} />;
+  }
+  if (mod.test) {
+    return <ExperimentPlayer test={mod.test} manifest={mod.manifest} />;
+  }
+  return notFound();
 }

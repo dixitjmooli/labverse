@@ -1,6 +1,8 @@
 // ─── Shared Lab Types ────────────────────────────────────────────────────────
 // Used by every experiment module + the generic experiment player.
 
+import type React from "react";
+
 export type ReactionVisual =
   | "precipitate"
   | "color-change"
@@ -108,5 +110,17 @@ export type SubjectId = "science" | "maths" | "physics" | "chemistry" | "biology
 
 export interface ExperimentModule {
   manifest: ExperimentManifest;
-  test: TestDef;
+  /**
+   * Generic test-tube-and-reagents definition. Used by all legacy experiments
+   * (Hinsberg, Lucas, Indicator Hunt, etc.) and the Reaction Type Detective game.
+   * Optional when `Component` is provided (scene-based activities skip this).
+   */
+  test?: TestDef;
+  /**
+   * Optional custom React component for activities whose UI doesn't fit the
+   * generic test-tube player (e.g. burning a magnesium ribbon with tongs,
+   * heating a crucible, electroplating). When present, the experiment page
+   * renders this component instead of the generic ExperimentPlayer.
+   */
+  Component?: React.ComponentType<{ manifest: ExperimentManifest }>;
 }
