@@ -30,11 +30,11 @@ const STEPS: Record<Exclude<Phase, "intro" | "results">, { title: string; instru
   "observe-pop":  { title: "Observe Plaster of Paris",          instruction: "The gypsum has lost 1½ molecules of water and become PLASTER OF PARIS (CaSO₄·½H₂O). Still white, but chemically different." },
   "add-water":    { title: "Add Water to PoP",                  instruction: "Add water to the Plaster of Paris powder and stir. The setting reaction begins immediately." },
   "observe-set":  { title: "Observe the Setting",               instruction: "Within minutes, the wet paste HARDENS into a solid mass — gypsum again. The PoP has set. This is why it's used in casts and moulds." },
-  "classify":     { title: "Conclude",                          instruction: "Gypsum ⇌ Plaster of Paris + 1½ H₂O. Heating drives off water; adding water brings it back. What type of reaction?" },
+  "classify":     { title: "Check Your Understanding",            instruction: "Why must gypsum be heated at exactly 373 K (100°C) to make Plaster of Paris — not hotter, not cooler?" },
 };
 
-const OPTIONS = ["Reversible Decomposition", "Combination", "Displacement", "Double Displacement", "Oxidation-Reduction"];
-const CORRECT = "Reversible Decomposition";
+const OPTIONS = ["To remove only 1½ waters — too hot removes ALL water, giving 'dead burnt plaster' that can't set", "To melt the gypsum into a liquid form", "To evaporate all the water at once for a quick reaction", "To oxidise the calcium sulphate", "To make the gypsum crystallise faster"];
+const CORRECT = "To remove only 1½ waters — too hot removes ALL water, giving 'dead burnt plaster' that can't set";
 const EQUATION = "CaSO₄·2H₂O (gypsum) ⇌ CaSO₄·½H₂O (PoP) + 1½ H₂O";
 
 const RECAP = [
@@ -222,7 +222,7 @@ export function PlasterOfParisActivity({ manifest }: { manifest: ExperimentManif
           <ContinueButton onClick={handleContinue} gradient={manifest.gradient} />
         )}
         {phase === "classify" && (
-          <ActivityClassify question="CaSO₄·2H₂O ⇌ CaSO₄·½H₂O + 1½ H₂O. What type of reaction is this?" options={OPTIONS} onSelect={handleClassify} selected={selectedAnswer} />
+          <ActivityClassify title="Check Your Understanding" question="Why must gypsum be heated at exactly 373 K (100°C) to make Plaster of Paris?" options={OPTIONS} onSelect={handleClassify} selected={selectedAnswer} />
         )}
       </main>
     </ActivityShell>

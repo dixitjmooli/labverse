@@ -22,11 +22,11 @@ const STEPS: Record<Exclude<Phase, "intro" | "results">, { title: string; instru
   "add-cuo": { title: "Add Copper Oxide",    instruction: "Take a small amount of COPPER OXIDE (CuO — BLACK powder) in a beaker. CuO is a BASIC OXIDE." },
   "add-hcl": { title: "Add Dilute HCl",      instruction: "Slowly add dilute HCl to the beaker while stirring. The black powder reacts with the acid." },
   "observe": { title: "Observe the Reaction", instruction: "The BLACK powder DISSOLVES, and the solution turns BLUE-GREEN (copper(II) chloride, CuCl₂). Water is also formed." },
-  "classify":{ title: "Conclude",            instruction: "CuO + 2HCl → CuCl₂ + H₂O. A metal oxide reacts with an acid to form a salt + water. What type of reaction?" },
+  "classify":{ title: "Check Your Understanding",            instruction: "CuO reacts with HCl to form a salt + water. What does this tell you about copper oxide?" },
 };
 
-const OPTIONS = ["Double Displacement (Neutralisation)", "Combination", "Decomposition", "Displacement", "Oxidation-Reduction"];
-const CORRECT = "Double Displacement (Neutralisation)";
+const OPTIONS = ["CuO is a BASIC OXIDE (reacts with acids)", "CuO is an ACIDIC OXIDE (reacts with bases)", "CuO is a NEUTRAL OXIDE", "CuO is an AMPHOTERIC OXIDE", "CuO is a PEROXIDE"];
+const CORRECT = "CuO is a BASIC OXIDE (reacts with acids)";
 const EQUATION = "CuO + 2HCl → CuCl₂ + H₂O    (basic oxide + acid → salt + water)";
 
 const RECAP = [
@@ -180,7 +180,7 @@ export function MetalOxideAcidActivity({ manifest }: { manifest: ExperimentManif
           <ContinueButton onClick={handleContinue} gradient={manifest.gradient} />
         )}
         {phase === "classify" && (
-          <ActivityClassify question="CuO + 2HCl → CuCl₂ + H₂O. What type of reaction is this?" options={OPTIONS} onSelect={handleClassify} selected={selectedAnswer} />
+          <ActivityClassify title="Check Your Understanding" question="CuO reacts with HCl to form a salt + water. What does this tell you about copper oxide?" options={OPTIONS} onSelect={handleClassify} selected={selectedAnswer} />
         )}
       </main>
     </ActivityShell>

@@ -28,11 +28,11 @@ const STEPS: Record<Exclude<Phase, "intro" | "results">, { title: string; instru
   "heat":         { title: "Heat the Crystals",            instruction: "Hold the tube with a clamp and heat gently over a burner. Water of crystallisation is driven off as steam." },
   "observe":      { title: "Observe the Colour Change",    instruction: "The BLUE crystals turn WHITE (anhydrous CuSO₄). Water droplets condense on the cooler parts of the tube." },
   "add-water":    { title: "Rehydrate the White Powder",   instruction: "Add a few drops of water to the white anhydrous CuSO₄. The colour turns back to BLUE — the reaction is REVERSIBLE." },
-  "classify":     { title: "Conclude",                     instruction: "CuSO₄·5H₂O ⇌ CuSO₄ + 5H₂O. Heating drives off water of crystallisation; adding water brings it back. What type of reaction?" },
+  "classify":     { title: "Check Your Understanding",        instruction: "When water is added to the white anhydrous CuSO₄ powder, it instantly turns blue again. Why?" },
 };
 
-const OPTIONS = ["Reversible Decomposition", "Combination", "Displacement", "Double Displacement", "Oxidation-Reduction"];
-const CORRECT = "Reversible Decomposition";
+const OPTIONS = ["The powder REHYDRATES — water re-enters the crystal structure, regenerating CuSO₄·5H₂O", "CuSO₄ dissolves in water to make a blue solution", "CuSO₄ oxidises in water to form CuO", "CuSO₄ reacts with oxygen in the water", "CuSO₄ decomposes in water to form Cu and SO₄"];
+const CORRECT = "The powder REHYDRATES — water re-enters the crystal structure, regenerating CuSO₄·5H₂O";
 const EQUATION = "CuSO₄·5H₂O (BLUE) ⇌ CuSO₄ (WHITE) + 5H₂O";
 
 const RECAP = [
@@ -218,7 +218,7 @@ export function WaterOfCrystallizationActivity({ manifest }: { manifest: Experim
           <ContinueButton onClick={handleContinue} gradient={manifest.gradient} />
         )}
         {phase === "classify" && (
-          <ActivityClassify question="CuSO₄·5H₂O ⇌ CuSO₄ + 5H₂O. What type of reaction is this?" options={OPTIONS} onSelect={handleClassify} selected={selectedAnswer} />
+          <ActivityClassify title="Check Your Understanding" question="When water is added to the white anhydrous CuSO₄ powder, it instantly turns blue again. Why?" options={OPTIONS} onSelect={handleClassify} selected={selectedAnswer} />
         )}
       </main>
     </ActivityShell>

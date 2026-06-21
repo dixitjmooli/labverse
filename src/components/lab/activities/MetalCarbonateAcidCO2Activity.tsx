@@ -25,11 +25,11 @@ const STEPS: Record<Exclude<Phase, "intro" | "results">, { title: string; instru
   "add-hcl":    { title: "Add Dilute HCl",            instruction: "Pour dilute hydrochloric acid onto the CaCO₃. Watch for brisk effervescence — CO₂ gas is being released." },
   "observe-co2":{ title: "Observe Effervescence",     instruction: "Brisk bubbling of CO₂ gas. The gas passes through the delivery tube into the lime water test tube." },
   "lime-water": { title: "Test with Lime Water",      instruction: "CO₂ bubbles through lime water (Ca(OH)₂). The lime water turns MILKY (white) due to insoluble CaCO₃ — confirming CO₂." },
-  "classify":   { title: "Conclude",                  instruction: "CaCO₃ + 2HCl → CaCl₂ + H₂O + CO₂↑. The CO₂ is confirmed by the lime water test. What type of reaction is this?" },
+  "classify":   { title: "Check Your Understanding",  instruction: "What does the milky appearance of lime water confirm?" },
 };
 
-const OPTIONS = ["Double Displacement", "Combination", "Decomposition", "Displacement", "Oxidation-Reduction"];
-const CORRECT = "Double Displacement";
+const OPTIONS = ["The gas is CO₂ (carbon dioxide)", "The gas is H₂ (hydrogen)", "The gas is O₂ (oxygen)", "The gas is N₂ (nitrogen)", "The gas is SO₂ (sulphur dioxide)"];
+const CORRECT = "The gas is CO₂ (carbon dioxide)";
 const EQUATION = "CaCO₃ + 2HCl → CaCl₂ + H₂O + CO₂↑    (CO₂ test: lime water turns milky)";
 
 const RECAP = [
@@ -203,7 +203,7 @@ export function MetalCarbonateAcidCO2Activity({ manifest }: { manifest: Experime
           <ContinueButton onClick={handleContinue} gradient={manifest.gradient} />
         )}
         {phase === "classify" && (
-          <ActivityClassify question="CaCO₃ + 2HCl → CaCl₂ + H₂O + CO₂. What type of reaction is this?" options={OPTIONS} onSelect={handleClassify} selected={selectedAnswer} />
+          <ActivityClassify title="Check Your Understanding" question="The lime water turned milky. What does this confirm?" options={OPTIONS} onSelect={handleClassify} selected={selectedAnswer} />
         )}
       </main>
     </ActivityShell>

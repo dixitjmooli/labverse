@@ -23,11 +23,11 @@ const STEPS: Record<Exclude<Phase, "intro" | "results">, { title: string; instru
   "add-naoh":  { title: "Add NaOH Solution",      instruction: "Take some SODIUM HYDROXIDE (NaOH) solution in a test tube. Add a few drops of phenolphthalein — the solution turns PINK (basic)." },
   "pass-co2":  { title: "Pass CO₂ Gas",             instruction: "Pass CARBON DIOXIDE gas through the pink NaOH solution. CO₂ is an ACIDIC OXIDE — it should react with the base." },
   "observe":   { title: "Observe the Reaction",     instruction: "The PINK colour slowly DISAPPEARS as CO₂ reacts with NaOH. The product is SODIUM CARBONATE (Na₂CO₃), which is less basic than NaOH." },
-  "classify":  { title: "Conclude",                 instruction: "2NaOH + CO₂ → Na₂CO₃ + H₂O. A non-metal oxide reacts with a base to form a salt + water. What type of reaction?" },
+  "classify":  { title: "Check Your Understanding",                 instruction: "Why does the pink phenolphthalein colour disappear when CO₂ is bubbled through NaOH?" },
 };
 
-const OPTIONS = ["Double Displacement (Neutralisation)", "Combination", "Decomposition", "Displacement", "Oxidation-Reduction"];
-const CORRECT = "Double Displacement (Neutralisation)";
+const OPTIONS = ["CO₂ is an acidic oxide — it neutralises the basic NaOH (pH drops below 8.2)", "CO₂ bleaches the phenolphthalein dye directly", "CO₂ evaporates the NaOH out of the tube", "CO₂ turns NaOH into a strong acid", "CO₂ cools the solution, which destroys the colour"];
+const CORRECT = "CO₂ is an acidic oxide — it neutralises the basic NaOH (pH drops below 8.2)";
 const EQUATION = "2NaOH + CO₂ → Na₂CO₃ + H₂O    (acidic oxide + base → salt + water)";
 
 const RECAP = [
@@ -184,7 +184,7 @@ export function NonMetalOxideBaseActivity({ manifest }: { manifest: ExperimentMa
           <ContinueButton onClick={handleContinue} gradient={manifest.gradient} />
         )}
         {phase === "classify" && (
-          <ActivityClassify question="2NaOH + CO₂ → Na₂CO₃ + H₂O. What type of reaction is this?" options={OPTIONS} onSelect={handleClassify} selected={selectedAnswer} />
+          <ActivityClassify title="Check Your Understanding" question="Why does the pink phenolphthalein colour disappear when CO₂ is bubbled through NaOH?" options={OPTIONS} onSelect={handleClassify} selected={selectedAnswer} />
         )}
       </main>
     </ActivityShell>

@@ -299,11 +299,13 @@ export function ActivityClassify({
   options,
   onSelect,
   selected,
+  title = "Classify the Reaction",
 }: {
   question: string;
   options: string[];
   onSelect: (option: string) => void;
   selected: string | null;
+  title?: string;
 }) {
   return (
     <div className="max-w-lg mx-auto w-full px-4">
@@ -312,7 +314,7 @@ export function ActivityClassify({
         animate={{ y: 0, opacity: 1 }}
         className="bg-white/95 rounded-2xl p-6 shadow-xl border border-gray-100"
       >
-        <h2 className="text-xl font-black text-gray-800 mb-2 text-center">Classify the Reaction</h2>
+        <h2 className="text-xl font-black text-gray-800 mb-2 text-center">{title}</h2>
         <p className="text-sm text-gray-500 mb-5 text-center">{question}</p>
         <div className="grid grid-cols-1 gap-2">
           {options.map((opt) => {

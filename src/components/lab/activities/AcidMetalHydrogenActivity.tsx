@@ -30,12 +30,12 @@ const STEPS: Record<Exclude<Phase, "intro" | "results">, { title: string; instru
   "drop-magnesium":  { title: "Drop Magnesium in HCl",  instruction: "Add a piece of MAGNESIUM ribbon to a fresh tube of dilute HCl. VERY vigorous effervescence — Mg is more reactive than Zn." },
   "drop-iron":       { title: "Drop Iron in HCl",       instruction: "Add an IRON NAIL to a fresh tube of dilute HCl. Slower effervescence — Fe is less reactive than Zn." },
   "pop-test":        { title: "Test for H₂ Gas",        instruction: "Bring a BURNING matchstick to the mouth of the most vigorous tube. A 'POP' sound confirms H₂." },
-  "classify":        { title: "Conclude",               instruction: "All three metals released H₂ gas from HCl. What type of reaction is Acid + Metal?" },
+  "classify":        { title: "Check Your Understanding", instruction: "Based on what you observed, which metal released H₂ fastest from dilute HCl?" },
 };
 
-const OPTIONS = ["Displacement", "Combination", "Decomposition", "Double Displacement", "Oxidation-Reduction"];
-const CORRECT = "Displacement";
-const EQUATION = "Metal + Acid → Salt + H₂↑  (e.g., Zn + 2HCl → ZnCl₂ + H₂↑)";
+const OPTIONS = ["Magnesium (most reactive)", "Zinc (medium)", "Iron (least of the three)", "All three released H₂ at the same rate", "Copper would release H₂ fastest"];
+const CORRECT = "Magnesium (most reactive)";
+const EQUATION = "Metal + Acid → Salt + H₂↑    (Mg > Zn > Fe in reactivity)";
 
 const RECAP = [
   "Acids react with many metals to produce a SALT + HYDROGEN gas. The general equation is: Metal + Acid → Salt + H₂↑. The salt formed depends on the acid and the metal — e.g., Zn + 2HCl → ZnCl₂ + H₂, Mg + 2HCl → MgCl₂ + H₂, Fe + 2HCl → FeCl₂ + H₂.",
@@ -205,7 +205,7 @@ export function AcidMetalHydrogenActivity({ manifest }: { manifest: ExperimentMa
           <ContinueButton onClick={handleContinue} gradient={manifest.gradient} />
         )}
         {phase === "classify" && (
-          <ActivityClassify question="Metal + Acid → Salt + H₂. What type of reaction is this?" options={OPTIONS} onSelect={handleClassify} selected={selectedAnswer} />
+          <ActivityClassify title="Check Your Understanding" question="Which metal released H₂ fastest from dilute HCl?" options={OPTIONS} onSelect={handleClassify} selected={selectedAnswer} />
         )}
       </main>
     </ActivityShell>

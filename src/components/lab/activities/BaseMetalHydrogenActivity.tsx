@@ -27,11 +27,11 @@ const STEPS: Record<Exclude<Phase, "intro" | "results">, { title: string; instru
   "drop-zinc": { title: "Add Zinc Granules",       instruction: "Add a few ZINC GRANULES to the NaOH solution. Initially, nothing happens at room temperature." },
   "heat":      { title: "Heat Gently",              instruction: "Warm the test tube gently over a burner. H₂ gas starts evolving from the zinc surface." },
   "pop-test":  { title: "Test for H₂",              instruction: "Bring a BURNING matchstick to the tube mouth. A 'POP' confirms H₂ — even bases can release H₂ with amphoteric metals!" },
-  "classify":  { title: "Conclude",                 instruction: "Zn + NaOH (base) → Na₂ZnO₂ + H₂. This is a displacement reaction. Note: Zn is amphoteric — most metals do NOT react with bases." },
+  "classify":  { title: "Check Your Understanding", instruction: "Why does NaOH react with Zn to release H₂, but NOT with Fe or Cu?" },
 };
 
-const OPTIONS = ["Displacement", "Combination", "Decomposition", "Double Displacement", "Oxidation-Reduction"];
-const CORRECT = "Displacement";
+const OPTIONS = ["Zinc is AMPHOTERIC (reacts with both acids and bases)", "Zinc is more reactive than Fe and Cu", "Zinc is a non-metal", "Zinc has a higher melting point", "Zinc is radioactive"];
+const CORRECT = "Zinc is AMPHOTERIC (reacts with both acids and bases)";
 const EQUATION = "2NaOH + Zn → Na₂ZnO₂ + H₂↑   (sodium zincate + hydrogen)";
 
 const RECAP = [
@@ -213,7 +213,7 @@ export function BaseMetalHydrogenActivity({ manifest }: { manifest: ExperimentMa
           <ContinueButton onClick={handleContinue} gradient={manifest.gradient} />
         )}
         {phase === "classify" && (
-          <ActivityClassify question="2NaOH + Zn → Na₂ZnO₂ + H₂. What type of reaction is this?" options={OPTIONS} onSelect={handleClassify} selected={selectedAnswer} />
+          <ActivityClassify title="Check Your Understanding" question="Why does NaOH react with Zn to release H₂, but NOT with Fe or Cu?" options={OPTIONS} onSelect={handleClassify} selected={selectedAnswer} />
         )}
       </main>
     </ActivityShell>
