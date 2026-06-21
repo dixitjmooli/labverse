@@ -245,55 +245,75 @@ function HeatingLeadNitrateScene({
           </motion.g>
         )}
 
-        {/* Boiling tube (tilted, mouth right) */}
-        <g transform="rotate(-15 200 200)">
-          <rect x="60" y="195" width="80" height="10" fill="#475569" rx="2" />
-          <rect x="55" y="190" width="14" height="20" fill="#1f2937" rx="2" />
-          <rect x="145" y="100" width="30" height="110" fill="rgba(255,255,255,0.15)" stroke="#475569" strokeWidth="2" rx="2" />
-          <rect x="142" y="96" width="36" height="6" fill="none" stroke="#475569" strokeWidth="2" rx="1" />
+        {/* ─── Retort stand clamp (horizontal arm from the left) ─────────── */}
+        <rect x="50" y="100" width="6" height="140" fill="#475569" rx="1" />
+        <rect x="30" y="238" width="50" height="6" fill="#1f2937" rx="1" />
+        <rect x="55" y="158" width="125" height="6" fill="#475569" rx="1" />
+        <rect x="178" y="150" width="14" height="22" fill="#1f2937" rx="2" />
+        <rect x="178" y="150" width="14" height="3" fill="#374151" />
+        <rect x="178" y="169" width="14" height="3" fill="#374151" />
+        <circle cx="185" cy="146" r="3" fill="#6b7280" stroke="#1f2937" strokeWidth="0.5" />
 
-          {/* Residue */}
+        {/* ─── Boiling tube (VERTICAL, centered above the burner at x=200) ─── */}
+        <g>
+          <path
+            d="M 185 110 L 215 110 L 215 215 Q 215 222 208 222 L 192 222 Q 185 222 185 215 Z"
+            fill="rgba(255,255,255,0.15)"
+            stroke="#475569"
+            strokeWidth="2"
+          />
+          <rect x="182" y="106" width="36" height="6" fill="none" stroke="#475569" strokeWidth="2" rx="1" />
+          <line x1="189" y1="215" x2="189" y2="120" stroke="#ffffff" strokeWidth="1.5" opacity="0.4" />
+
+          {/* Residue at the bottom of the tube */}
           {crystalsAdded && (
             <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <rect x="146" y="195" width="28" height="14" fill={residueColor} stroke="#1f2937" strokeWidth="0.4" />
+              <rect x="186" y="205" width="28" height="14" fill={residueColor} stroke="#1f2937" strokeWidth="0.4" />
               {residueState === "yellow" && (
                 <>
-                  <circle cx="152" cy="200" r="1.5" fill="#a16207" />
-                  <circle cx="160" cy="202" r="2" fill="#a16207" />
-                  <circle cx="168" cy="200" r="1.5" fill="#a16207" />
+                  <circle cx="192" cy="210" r="1.5" fill="#a16207" />
+                  <circle cx="200" cy="212" r="2" fill="#a16207" />
+                  <circle cx="208" cy="210" r="1.5" fill="#a16207" />
                 </>
               )}
             </motion.g>
           )}
-          <line x1="150" y1="200" x2="150" y2="110" stroke="#ffffff" strokeWidth="1.5" opacity="0.4" />
         </g>
 
-        {/* Brown NO₂ fumes */}
+        {/* ─── Brown NO₂ fumes rising from the tube MOUTH (at x=200, y=106) ── */}
         {fumes && [0, 1, 2, 3, 4].map((i) => (
           <motion.circle
             key={i}
-            cx={270 + (i * 6)}
-            cy={120}
-            r={5 + i}
+            cx={195 + (i * 3)}
+            cy={100}
+            r={5 + (i % 3)}
             fill="#78350f"
             opacity={0.6}
             animate={{
-              cx: [270 + (i * 6), 280 + (i * 10), 295 + (i * 12)],
-              cy: [120, 80, 30],
+              cx: [195 + (i * 3), 190 + (i * 6), 185 + (i * 10)],
+              cy: [100, 60, 20],
               opacity: [0.7, 0.4, 0],
-              r: [5 + i, 10 + i, 15 + i],
+              r: [5 + (i % 3), 10 + (i % 3), 15 + (i % 3)],
             }}
             transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.3 }}
           />
         ))}
 
-        {/* Glowing splint (in splint phase) */}
+        {/* ─── Glowing splint (in splint phase) ──────────────────────────── */}
+        {/* Starts on the right at (297, 160); swings LEFT to the tube mouth at (200, 106). */}
+        {/* Translation: x=-97, y=-54 brings the tip from (297, 160) to (200, 106). */}
         {phase === "splint" && (
           <motion.g
-            animate={{ x: splintGlowing && !splintRekindled ? -90 : 0 }}
+            animate={{
+              x: splintGlowing && !splintRekindled ? -97 : 0,
+              y: splintGlowing && !splintRekindled ? -54 : 0,
+              rotate: splintGlowing && !splintRekindled ? 25 : 0,
+            }}
             transition={{ type: "spring", stiffness: 80, damping: 12 }}
+            style={{ transformOrigin: "297px 190px" }}
           >
-            <rect x="295" y="160" width="4" height="60" fill="#a16207" rx="1" transform="rotate(0 297 190)" />
+            {/* Splint stick */}
+            <rect x="295" y="160" width="4" height="60" fill="#a16207" rx="1" />
             {/* Splint tip — glowing ember */}
             {splintGlowing && !splintRekindled && (
               <motion.circle cx="297" cy="160" r="3" fill="#dc2626" animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 0.5, repeat: Infinity }} />

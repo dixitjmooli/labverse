@@ -251,58 +251,73 @@ function HeatingFerrousSulphateScene({
           </motion.g>
         )}
 
-        {/* Boiling tube (held by clamp, tilted, mouth pointing right) */}
-        <g transform="rotate(-15 200 200)">
-          {/* Clamp holder */}
-          <rect x="60" y="195" width="80" height="10" fill="#475569" rx="2" />
-          <rect x="55" y="190" width="14" height="20" fill="#1f2937" rx="2" />
+        {/* ─── Retort stand clamp (horizontal arm from the left) ─────────── */}
+        {/* Vertical stand pole on the far left */}
+        <rect x="50" y="100" width="6" height="140" fill="#475569" rx="1" />
+        {/* Stand base (heavy foot) */}
+        <rect x="30" y="238" width="50" height="6" fill="#1f2937" rx="1" />
+        {/* Horizontal clamp arm extending right to grip the tube */}
+        <rect x="55" y="158" width="125" height="6" fill="#475569" rx="1" />
+        {/* Clamp grip jaws gripping the tube at y≈160 */}
+        <rect x="178" y="150" width="14" height="22" fill="#1f2937" rx="2" />
+        <rect x="178" y="150" width="14" height="3" fill="#374151" />
+        <rect x="178" y="169" width="14" height="3" fill="#374151" />
+        {/* Clamp screw knob (top) */}
+        <circle cx="185" cy="146" r="3" fill="#6b7280" stroke="#1f2937" strokeWidth="0.5" />
 
-          {/* Tube body (open at top) */}
-          <rect x="145" y="100" width="30" height="110" fill="rgba(255,255,255,0.15)" stroke="#475569" strokeWidth="2" rx="2" />
-          {/* Mouth */}
-          <rect x="142" y="96" width="36" height="6" fill="none" stroke="#475569" strokeWidth="2" rx="1" />
+        {/* ─── Boiling tube (VERTICAL, centered above the burner at x=200) ─── */}
+        {/* Burner flame tip is at y=175; tube bottom sits just above at y=220 */}
+        <g>
+          {/* Tube body (closed rounded bottom, open top) */}
+          <path
+            d="M 185 110 L 215 110 L 215 215 Q 215 222 208 222 L 192 222 Q 185 222 185 215 Z"
+            fill="rgba(255,255,255,0.15)"
+            stroke="#475569"
+            strokeWidth="2"
+          />
+          {/* Mouth rim at the top */}
+          <rect x="182" y="106" width="36" height="6" fill="none" stroke="#475569" strokeWidth="2" rx="1" />
+          {/* Glass shine on the left side */}
+          <line x1="189" y1="215" x2="189" y2="120" stroke="#ffffff" strokeWidth="1.5" opacity="0.4" />
 
-          {/* Crystals at bottom of tube */}
+          {/* Crystals / residue at the bottom of the tube */}
           {crystalsAdded && (
             <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <rect x="146" y="195" width="28" height="14" fill={crystalColor} stroke={crystalState === "white" ? "#9ca3af" : "#1f2937"} strokeWidth="0.4" />
+              <rect x="186" y="205" width="28" height="14" fill={crystalColor} stroke={crystalState === "white" ? "#9ca3af" : "#1f2937"} strokeWidth="0.4" />
               {crystalState === "green" && (
                 <>
-                  <circle cx="152" cy="200" r="2" fill="#4ade80" />
-                  <circle cx="160" cy="202" r="2.5" fill="#4ade80" />
-                  <circle cx="168" cy="200" r="2" fill="#4ade80" />
+                  <circle cx="192" cy="210" r="2" fill="#4ade80" />
+                  <circle cx="200" cy="212" r="2.5" fill="#4ade80" />
+                  <circle cx="208" cy="210" r="2" fill="#4ade80" />
                 </>
               )}
               {crystalState === "red-brown" && (
                 <>
-                  <circle cx="152" cy="200" r="1.5" fill="#7f1d1d" />
-                  <circle cx="160" cy="202" r="2" fill="#7f1d1d" />
-                  <circle cx="168" cy="200" r="1.5" fill="#7f1d1d" />
+                  <circle cx="192" cy="210" r="1.5" fill="#7f1d1d" />
+                  <circle cx="200" cy="212" r="2" fill="#7f1d1d" />
+                  <circle cx="208" cy="210" r="1.5" fill="#7f1d1d" />
                 </>
               )}
             </motion.g>
           )}
-
-          {/* Glass shine */}
-          <line x1="150" y1="200" x2="150" y2="110" stroke="#ffffff" strokeWidth="1.5" opacity="0.4" />
         </g>
 
-        {/* Brown fumes rising from tube mouth */}
-        {fumes && [0, 1, 2, 3].map((i) => (
+        {/* ─── Brown fumes rising from the tube MOUTH (at x=200, y=106) ────── */}
+        {fumes && [0, 1, 2, 3, 4].map((i) => (
           <motion.circle
             key={i}
-            cx={270 + (i * 8)}
-            cy={120}
-            r={4 + i}
+            cx={195 + (i * 3)}
+            cy={100}
+            r={4 + (i % 3)}
             fill="#a16207"
-            opacity={0.5}
+            opacity={0.55}
             animate={{
-              cx: [270 + (i * 8), 280 + (i * 12), 290 + (i * 14)],
-              cy: [120, 80, 40],
-              opacity: [0.6, 0.3, 0],
-              r: [4 + i, 8 + i, 12 + i],
+              cx: [195 + (i * 3), 190 + (i * 6), 185 + (i * 10)],
+              cy: [100, 60, 20],
+              opacity: [0.7, 0.4, 0],
+              r: [4 + (i % 3), 8 + (i % 3), 12 + (i % 3)],
             }}
-            transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.4 }}
+            transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.35 }}
           />
         ))}
 
