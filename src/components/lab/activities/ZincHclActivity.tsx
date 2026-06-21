@@ -274,67 +274,72 @@ function ZincHclScene({
         <rect x="0" y="240" width="400" height="60" fill="#92633a" />
         <rect x="0" y="240" width="400" height="3" fill="#6b4423" />
 
-        {/* ─── Conical Flask (centered at x=180) ──────────────────────── */}
+        {/* ─── Conical (Erlenmeyer) Flask (centered at x=190) ─────────── */}
+        {/* Flask outline: wide flat bottom → sloping sides → narrow neck → flared mouth rim */}
         <g>
-          {/* Liquid inside flask */}
+          {/* Liquid inside flask (matches interior slope) */}
           {acidAdded && (
             <motion.path
-              d="M 158 215 L 202 215 L 202 175 L 158 175 Z"
+              d="M 164.5 175 L 215.5 175 L 240 220 L 140 220 Z"
               fill={liquidColor}
               initial={{ opacity: 0, scaleY: 0 }}
               animate={{ opacity: 1, scaleY: 1 }}
-              style={{ transformOrigin: "180px 215px" }}
+              style={{ transformOrigin: "190px 220px" }}
             />
           )}
           {/* Liquid surface */}
           {acidAdded && (
-            <motion.ellipse cx="180" cy="175" rx="22" ry="2" fill={liquidColor} initial={{ opacity: 0 }} animate={{ opacity: 1 }} />
+            <motion.ellipse cx="190" cy="175" rx="25.5" ry="2" fill={liquidColor} initial={{ opacity: 0 }} animate={{ opacity: 1 }} />
           )}
 
-          {/* Flask outline (drawn ON TOP of liquid) */}
-          {/* Flask body — trapezoid */}
-          <path d="M 158 215 L 202 215 L 202 165 L 158 165 Z" fill="none" stroke="#475569" strokeWidth="2" />
-          {/* Neck */}
-          <rect x="170" y="135" width="20" height="32" fill="none" stroke="#475569" strokeWidth="2" />
-          {/* Mouth rim */}
-          <rect x="166" y="131" width="28" height="6" fill="none" stroke="#475569" strokeWidth="2" rx="1" />
-          {/* Glass shine */}
-          <line x1="162" y1="210" x2="162" y2="175" stroke="#ffffff" strokeWidth="2" opacity="0.4" />
+          {/* Flask outline (Erlenmeyer shape, drawn ON TOP of liquid) */}
+          <path
+            d="M 166 131 L 214 131 L 214 137 L 210 137 L 210 165 L 240 220 L 140 220 L 170 165 L 170 137 L 166 137 Z"
+            fill="rgba(255,255,255,0.12)"
+            stroke="#475569"
+            strokeWidth="2.5"
+          />
+          {/* Glass shine on body (follows the slope) */}
+          <line x1="155" y1="215" x2="172" y2="172" stroke="#ffffff" strokeWidth="2" opacity="0.4" />
 
-          {/* Zinc granules at bottom */}
+          {/* Zinc granules at bottom of flask */}
           {zincAdded && !acidAdded && (
             <>
-              <circle cx="168" cy="212" r="3" fill="#9ca3af" stroke="#475569" strokeWidth="0.4" />
-              <circle cx="175" cy="213" r="3.5" fill="#9ca3af" stroke="#475569" strokeWidth="0.4" />
-              <circle cx="183" cy="212" r="3" fill="#9ca3af" stroke="#475569" strokeWidth="0.4" />
-              <circle cx="190" cy="213" r="3.5" fill="#9ca3af" stroke="#475569" strokeWidth="0.4" />
-              <circle cx="197" cy="212" r="3" fill="#9ca3af" stroke="#475569" strokeWidth="0.4" />
-              <circle cx="178" cy="209" r="2.5" fill="#cbd5e1" stroke="#475569" strokeWidth="0.4" />
-              <circle cx="188" cy="209" r="2.5" fill="#cbd5e1" stroke="#475569" strokeWidth="0.4" />
+              <circle cx="160" cy="217" r="3" fill="#9ca3af" stroke="#475569" strokeWidth="0.4" />
+              <circle cx="170" cy="218" r="3.5" fill="#9ca3af" stroke="#475569" strokeWidth="0.4" />
+              <circle cx="180" cy="217" r="3" fill="#9ca3af" stroke="#475569" strokeWidth="0.4" />
+              <circle cx="190" cy="218" r="3.5" fill="#9ca3af" stroke="#475569" strokeWidth="0.4" />
+              <circle cx="200" cy="217" r="3" fill="#9ca3af" stroke="#475569" strokeWidth="0.4" />
+              <circle cx="210" cy="218" r="3.5" fill="#9ca3af" stroke="#475569" strokeWidth="0.4" />
+              <circle cx="220" cy="217" r="3" fill="#9ca3af" stroke="#475569" strokeWidth="0.4" />
+              <circle cx="175" cy="214" r="2.5" fill="#cbd5e1" stroke="#475569" strokeWidth="0.4" />
+              <circle cx="195" cy="214" r="2.5" fill="#cbd5e1" stroke="#475569" strokeWidth="0.4" />
             </>
           )}
           {/* Zinc granules (subtle, through liquid) */}
           {zincAdded && acidAdded && (
             <>
-              <circle cx="168" cy="212" r="3" fill="#6b7280" opacity="0.7" />
-              <circle cx="175" cy="213" r="3.5" fill="#6b7280" opacity="0.7" />
-              <circle cx="183" cy="212" r="3" fill="#6b7280" opacity="0.7" />
-              <circle cx="190" cy="213" r="3.5" fill="#6b7280" opacity="0.7" />
-              <circle cx="197" cy="212" r="3" fill="#6b7280" opacity="0.7" />
+              <circle cx="160" cy="217" r="3" fill="#6b7280" opacity="0.7" />
+              <circle cx="170" cy="218" r="3.5" fill="#6b7280" opacity="0.7" />
+              <circle cx="180" cy="217" r="3" fill="#6b7280" opacity="0.7" />
+              <circle cx="190" cy="218" r="3.5" fill="#6b7280" opacity="0.7" />
+              <circle cx="200" cy="217" r="3" fill="#6b7280" opacity="0.7" />
+              <circle cx="210" cy="218" r="3.5" fill="#6b7280" opacity="0.7" />
+              <circle cx="220" cy="217" r="3" fill="#6b7280" opacity="0.7" />
             </>
           )}
 
-          {/* Bubbles rising from zinc surface */}
-          {bubbling && [0, 1, 2, 3, 4, 5].map((i) => (
+          {/* Bubbles rising from zinc surface to liquid surface */}
+          {bubbling && [0, 1, 2, 3, 4, 5, 6].map((i) => (
             <motion.circle
               key={i}
-              cx={165 + (i * 6)}
-              cy={210}
+              cx={162 + (i * 8)}
+              cy={215}
               r={1.5 + (i % 3)}
               fill="#ffffff"
               opacity={0.85}
               animate={{
-                cy: [210, 175],
+                cy: [215, 175],
                 opacity: [0.9, 0.9, 0],
                 r: [1.5 + (i % 3), 2.5 + (i % 3)],
               }}
@@ -368,23 +373,26 @@ function ZincHclScene({
         )}
 
         {/* ─── Matchstick (in matchstick phase) ──────────────────────── */}
+        {/* Animation: matchstick starts on the right (lit), then swings UP-LEFT to the flask mouth. */}
+        {/* Flask mouth is at (190, 134); matchstick tip starts at (299.5, 158). */}
+        {/* Translation: x=-100, y=-27 → tip lands at (199.5, 131), then rotation -20° around */}
+        {/* (300, 200) [which translates to (200, 173)] brings the tip to ~(185, 134) — right at the mouth. */}
         {phase === "matchstick" && (
           <motion.g
             initial={false}
             animate={{
               x: matchAtMouth ? -100 : 0,
-              y: matchAtMouth ? 100 : 0,
+              y: matchAtMouth ? -27 : 0,
               rotate: matchAtMouth ? -20 : 0,
             }}
             transition={{ type: "spring", stiffness: 100, damping: 12 }}
             style={{ transformOrigin: "300px 200px" }}
           >
-            {/* Matchstick stick */}
-            <rect x="298" y="195" width="3" height="35" fill="#d4a574" rx="1" transform="rotate(180 300 215)" />
+            {/* Matchstick stick (single clean rect) */}
             <rect x="298" y="160" width="3" height="35" fill="#d4a574" rx="1" />
-            {/* Matchstick head */}
+            {/* Matchstick head (red phosphorus tip) */}
             <ellipse cx="299.5" cy="158" rx="3" ry="4" fill={matchLit ? "#f97316" : "#7c2d12"} />
-            {/* Flame on matchstick */}
+            {/* Flame on matchstick (when lit, before pop) */}
             {matchLit && !popped && (
               <motion.g
                 animate={{ scale: [1, 1.15, 1] }}
@@ -395,7 +403,7 @@ function ZincHclScene({
                 <ellipse cx="299" cy="153" rx="1.5" ry="2" fill="#fef3c7" />
               </motion.g>
             )}
-            {/* Pop explosion */}
+            {/* Pop explosion (at flask mouth) */}
             {popped && (
               <motion.g
                 initial={{ scale: 0, opacity: 1 }}
