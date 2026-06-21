@@ -46,11 +46,18 @@ function createTubes(test: TestDef): TubeState[] {
       id: String.fromCharCode(65 + i), // A, B, C, D...
       unknownType: t,
       addedReagentIds: [],
-      // Tube starts pre-filled with the unknown sample (clear liquid)
+      // Tube starts pre-filled with the unknown sample.
+      // Respect the experiment's initial description/liquidColor if it provided one
+      // (so e.g. Reaction Type Detective can show "Reactants: Fe + CuSO₄ (blue)"
+      // and a blue liquid before any trigger is added). Fall back to the default
+      // "Unknown sample" behaviour for legacy experiments.
       reaction: {
         ...baseReaction,
-        liquidColor: SAMPLE_LIQUID_COLOR,
-        description: SAMPLE_DESCRIPTION,
+        liquidColor:
+          baseReaction.liquidColor && baseReaction.liquidColor !== "transparent"
+            ? baseReaction.liquidColor
+            : SAMPLE_LIQUID_COLOR,
+        description: baseReaction.description || SAMPLE_DESCRIPTION,
       },
       liquidLevel: 1, // pre-filled with sample
       fizzing: false,
