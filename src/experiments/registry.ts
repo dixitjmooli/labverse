@@ -33,12 +33,35 @@ import esterTest from "@/experiments/class-12/chemistry/aldehydes-ketones-and-ca
 
 import indicatorHunt from "@/experiments/class-10/science/acids-bases-and-salts/indicator-hunt";
 import reactionTypeDetective from "@/experiments/class-10/science/chemical-reactions-and-equations/reaction-type-detective";
+import activity_1_1 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-1-burning-magnesium";
+import activity_1_2 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-2-zinc-hcl";
+import activity_1_3 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-3-quicklime-water";
+import activity_1_4 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-4-heating-ferrous-sulphate";
+import activity_1_5 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-5-heating-lead-nitrate";
+import activity_1_6 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-6-silver-chloride-sunlight";
+import activity_1_7 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-7-iron-copper-sulphate";
+import activity_1_8 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-8-lead-nitrate-potassium-iodide";
+import activity_1_9 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-9-sodium-sulphate-barium-chloride";
+import activity_1_10 from "@/experiments/class-10/science/chemical-reactions-and-equations/activity-1-10-copper-oxide-hydrogen";
 
 // ─── All experiment modules (full TestDef + manifest) ────────────────────────
 
 export const MODULES: ExperimentModule[] = [
   // ─── Class 10 · Science ────────────────────────────────────────────────────
   indicatorHunt,
+
+  // ─── Class 10 · Science · Chemical Reactions and Equations (Ch. 1) ────────
+  // One experiment per NCERT Activity 1.1 – 1.10, plus a "challenge" game.
+  activity_1_1,
+  activity_1_2,
+  activity_1_3,
+  activity_1_4,
+  activity_1_5,
+  activity_1_6,
+  activity_1_7,
+  activity_1_8,
+  activity_1_9,
+  activity_1_10,
   reactionTypeDetective,
 
   // ─── Class 12 · Chemistry · Amines ────────────────────────────────────────

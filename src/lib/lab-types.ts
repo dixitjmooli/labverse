@@ -78,6 +78,14 @@ export interface TestDef {
   introSteps: IntroStep[];
   reactionKey: ReactionKeyEntry[];
   recap: string[];
+  /**
+   * Optional multiple-choice options shown in the Identify phase.
+   * When absent, the Identify phase falls back to `unknownTypes` (legacy behaviour).
+   * When present, this is the source of truth for the option buttons — useful for
+   * single-tube activity simulations where `unknownTypes` has only ONE entry
+   * (the actual answer) but the player needs to choose from several options.
+   */
+  identifyOptions?: string[];
 }
 
 // ─── Experiment Manifest (registry entry) ────────────────────────────────────

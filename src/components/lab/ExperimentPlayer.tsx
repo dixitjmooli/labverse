@@ -522,14 +522,14 @@ function IdentifyScreen({ test, tubes, onSubmit }: { test: TestDef; tubes: TubeS
                 <TestTube2 className="w-3 h-3 mt-0.5 flex-shrink-0 text-gray-400" />
                 {tube.reaction.description || "No reagents added."}
               </div>
-              <div className="flex gap-2">
-                {test.unknownTypes.map((type) => {
+              <div className="flex gap-2 flex-wrap">
+                {(test.identifyOptions ?? test.unknownTypes).map((type) => {
                   const isSel = answers[tube.id] === type;
                   return (
                     <motion.button
                       key={type}
                       onClick={() => handleSelect(tube.id, type)}
-                      className={`flex-1 py-2 rounded-lg font-bold text-xs transition-all ${
+                      className={`flex-1 min-w-[80px] py-2 rounded-lg font-bold text-xs transition-all ${
                         isSel ? `bg-gradient-to-r ${test.gradient} text-white shadow-lg` : "bg-gray-100 text-gray-400 hover:bg-gray-200"
                       }`}
                       whileHover={{ scale: isSel ? 1 : 1.03 }}
